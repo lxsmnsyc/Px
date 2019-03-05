@@ -147,6 +147,7 @@ PublishedPromise is a Promise that you can resolve/reject asynchronously.
     * [.then(res, [rej])](#PublishedPromise+then) ⇒ <code>Promise</code>
     * [.catch(rej)](#PublishedPromise+catch) ⇒ <code>Promise</code>
     * [.finally(fin)](#PublishedPromise+finally) ⇒ <code>Promise</code>
+    * [.toPromise()](#PublishedPromise+toPromise) ⇒ <code>Promise</code>
 
 <a name="PublishedPromise+resolve"></a>
 
@@ -204,6 +205,12 @@ Finalize the PublishedPromise
 | --- | --- |
 | fin | <code>function</code> | 
 
+<a name="PublishedPromise+toPromise"></a>
+
+### publishedPromise.toPromise() ⇒ <code>Promise</code>
+Creates a Promise version of a PublishedPromise
+
+**Kind**: instance method of [<code>PublishedPromise</code>](#PublishedPromise)  
 <a name="external_Promise"></a>
 
 ## Promise
