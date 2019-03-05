@@ -337,7 +337,7 @@ Promise.equals = function (a, b){
  * @example
  * Promise.deferred(res => res("Hello World"));
  * 
- * @param {PromiseExecutor} the executor function for the DeferredPromise 
+ * @param {PromiseExecutor} executor - the executor function for the DeferredPromise 
  * @return {DeferredPromise}
  */
 Promise.deferred = function (fn){
@@ -367,7 +367,7 @@ Promise.prototype.defer = function (){
  *     console.log("Resolved: "..x)
  * })
  * promise.resolve(50);
- * @param {PromiseExecutor} the executor function for the PublishedPromise
+ * @param {PromiseExecutor} executor - the executor function for the PublishedPromise
  * @return {PublishedPromise}
  */
 Promise.publish = function (fn){
