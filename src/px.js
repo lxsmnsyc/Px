@@ -106,9 +106,9 @@ export class DeferredPromise{
         try{
             result = executor();
         } catch (e){
-            return new DeferredPromise.reject(e);
+            return DeferredPromise.reject(e);
         }
-        return new DeferredPromise.resolve(result);
+        return DeferredPromise.resolve(result);
     }
     /**
      * Attaches callbacks to the PublishedPromise
@@ -464,9 +464,9 @@ Promise.fromCallable = function (executor){
     try{
         result = executor();
     } catch (e){
-        return new Promise.reject(e);
+        return Promise.reject(e);
     }
-    return new Promise.resolve(result);
+    return Promise.resolve(result);
 }
 
 

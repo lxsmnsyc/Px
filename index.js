@@ -1,5 +1,8 @@
-var px = (function (exports) {
-  'use strict';
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.px = {}));
+}(this, function (exports) { 'use strict';
 
   /**
    * @license MIT
@@ -109,9 +112,9 @@ var px = (function (exports) {
           try{
               result = executor();
           } catch (e){
-              return new DeferredPromise.reject(e);
+              return DeferredPromise.reject(e);
           }
-          return new DeferredPromise.resolve(result);
+          return DeferredPromise.resolve(result);
       }
       /**
        * Attaches callbacks to the PublishedPromise
@@ -467,9 +470,9 @@ var px = (function (exports) {
       try{
           result = executor();
       } catch (e){
-          return new Promise.reject(e);
+          return Promise.reject(e);
       }
-      return new Promise.resolve(result);
+      return Promise.resolve(result);
   };
 
 
@@ -493,6 +496,6 @@ var px = (function (exports) {
   exports.DeferredPromise = DeferredPromise;
   exports.PublishedPromise = PublishedPromise;
 
-  return exports;
+  Object.defineProperty(exports, '__esModule', { value: true });
 
-}({}));
+}));
