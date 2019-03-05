@@ -71,7 +71,7 @@
  * 
  * @param {PromiseExecutor} executor a function that is passed to a Promise constructor.
  */
-class DeferredPromise{
+export class DeferredPromise{
     constructor(fn){
         this._supplier = fn;
     }
@@ -90,6 +90,25 @@ class DeferredPromise{
      */
     static reject(value){
         return new DeferredPromise((res, rej) => rej(value));
+    }
+    /**
+     * @description
+     * Converts a function into an executor function. 
+     * Returned values are interpreted as a resolved value, while
+     * thrown errors are interpreted as a rejected value.
+     * @example
+     * let promise = Promise.fromCallableDeferred(() => "hello world");
+     * @param {VanillaExecutor} executor
+     * @returns {Promise}
+     */
+    static fromCallable (executor){
+        let result;
+        try{
+            result = executor();
+        } catch (e){
+            return new DeferredPromise.reject(e);
+        }
+        return new DeferredPromise.resolve(result);
     }
     /**
      * Attaches callbacks to the PublishedPromise
@@ -183,7 +202,7 @@ class DeferredPromise{
  * 
  * @param {PromiseExecutor} executor a function that is passed to a Promise constructor.
  */
-class PublishedPromise{
+export class PublishedPromise{
     constructor(fn){
         this._promise = new Promise((res, rej) => {
             this._resolve = res;
@@ -408,4 +427,62 @@ Promise.prototype.timeout = function (amount){
             }
         }, amount);
     })
+}
+
+/**
+ * Polyfill for finally method
+ */
+Promise.prototype.finally = function(onFinally) {
+    return this.then(
+        /* onFulfilled */
+        res => Promise.resolve(onFinally()).then(() => res),
+        /* onRejected */
+        err => Promise.resolve(onFinally()).then(() => { throw err; })
+    );
+};
+
+/**
+ * a callback that is converted into a {@link PromiseExecutor}. 
+ * 
+ * @callback VanillaExecutor
+ * @params {Function} executor
+ */
+
+ /**
+  * @function external:Promise.fromCallable
+  * @description
+  * Converts a function into an executor function. 
+  * Returned values are interpreted as a resolved value, while
+  * thrown errors are interpreted as a rejected value.
+  * @example
+  * let promise = Promise.fromCallable(() => "hello world");
+  * @param {VanillaExecutor} executor
+  * @returns {Promise}
+  */
+Promise.fromCallable = function (executor){
+    let result;
+    try{
+        result = executor();
+    } catch (e){
+        return new Promise.reject(e);
+    }
+    return new Promise.resolve(result);
+}
+
+
+ /**
+  * @function external:Promise.fromCallableDeferred
+  * @description
+  * Converts a function into an executor function. 
+  * Returned values are interpreted as a resolved value, while
+  * thrown errors are interpreted as a rejected value.
+  * 
+  * This is a deferred version of {@link Promise.fromCallable}
+  * @example
+  * let promise = Promise.fromCallableDeferred(() => "hello world");
+  * @param {VanillaExecutor} executor
+  * @returns {Promise}
+  */
+Promise.fromCallableDeferred = function (executor){
+    return DeferredPromise.fromCallable(executor);
 }
