@@ -4,7 +4,8 @@
   "description": "Extensions for JS Promise",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "generate-docs": "jsdoc src/px.js -c conf.json -d docs/ -r README.md"
   },
   "repository": {
     "type": "git",
