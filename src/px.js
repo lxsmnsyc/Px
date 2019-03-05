@@ -159,7 +159,6 @@ class PublishedPromise{
     resolve(value){
         this._resolve(value);
     }
-
     /**
      * Rejects the PublishedPromise
      * @param {*} value 
@@ -193,6 +192,15 @@ class PublishedPromise{
      */
     finally(fin){
         return this._promise.finally(fin);
+    }
+    /**
+     * @description
+     * Creates a Promise version of a PublishedPromise
+     * 
+     * @returns {Promise}
+     */
+    toPromise(){
+        return this._promise;
     }
 }
 /**
