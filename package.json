@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/LXSMNSYC/Px#readme",
   "dependencies": {
+    "jsdoc": "^3.5.5",
     "mocha": "^6.0.2"
   }
 }
