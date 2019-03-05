@@ -1,8 +1,12 @@
 # Px
 Extension functions for JS Promise
 
-## Documentation
+## Introduction
 
+Px allows the extension of the native Promise objects by adding additional functions to its prototype.
+Px also introduces two Promise variants: 
+* DeferredPromise which is a Promise that, unlike a vanilla Promise, does not call the executor passed to its constructor synchronously but calls it whenever a callback is attached to it (so it produces a different Promise objects every call) 
+* PublishedPromise, which allows asynchronous fulfillment.
 
 ## Build
 First, run install the dependencies:
@@ -21,7 +25,7 @@ npm run generate-docs
 ```
 
 ## License
-```
+
 MIT License
 
 Copyright (c) 2019 Alexis Munsayac
@@ -43,4 +47,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-```
