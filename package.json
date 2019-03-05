@@ -1,5 +1,5 @@
 {
-  "name": "px",
+  "name": "promise-ex",
   "version": "0.1.0",
   "description": "Extensions for JS Promise",
   "main": "index.js",

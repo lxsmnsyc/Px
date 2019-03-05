@@ -1,5 +1,6 @@
 # Px
 Extension functions for JS Promise
+[![](https://data.jsdelivr.com/v1/package/npm/promise-ex/badge)](https://www.jsdelivr.com/package/npm/promise-ex)
 
 ## Introduction
 
@@ -7,6 +8,21 @@ Px allows the extension of the native Promise objects by adding additional funct
 Px also introduces two Promise variants: 
 * DeferredPromise which is a Promise that, unlike a vanilla Promise, does not call the executor passed to its constructor synchronously but calls it whenever a callback is attached to it (so it produces a different Promise objects every call) 
 * PublishedPromise, which allows asynchronous fulfillment.
+
+## Install
+NPM
+```
+npm i promise-ex
+```
+then in NodeJs:
+```js
+let Px = require('promise-ex');
+```
+
+CDN
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-ex@0.1.0/index.min.js"></script>
+```
 
 ## Build
 First, run install the dependencies:
