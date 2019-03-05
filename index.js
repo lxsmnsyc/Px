@@ -1,8 +1,5 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.px = {}));
-}(this, function (exports) { 'use strict';
+var px = (function (exports) {
+  'use strict';
 
   /**
    * @license MIT
@@ -496,6 +493,6 @@
   exports.DeferredPromise = DeferredPromise;
   exports.PublishedPromise = PublishedPromise;
 
-  Object.defineProperty(exports, '__esModule', { value: true });
+  return exports;
 
-}));
+}({}));
