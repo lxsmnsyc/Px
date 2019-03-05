@@ -1,6 +1,7 @@
 # Px
 Extension functions for JS Promise
 [![](https://data.jsdelivr.com/v1/package/npm/promise-ex/badge)](https://www.jsdelivr.com/package/npm/promise-ex)
+[![Build Status](https://travis-ci.org/LXSMNSYC/Px.svg?branch=master)](https://travis-ci.org/LXSMNSYC/Px)
 
 ## Introduction
 
