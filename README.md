@@ -1,5 +1,6 @@
 # Px
 Extension functions for JS Promise
+
 ## Classes
 
 <dl>
@@ -103,7 +104,7 @@ before running the executor.
 
 **Example**  
 ```js
-Promise.resolve(50)
+Promise.resolve(50).defer().delay(5000);
 ```
 <a name="DeferredPromise+toPromise"></a>
 
@@ -146,7 +147,6 @@ PublishedPromise is a Promise that you can resolve/reject asynchronously.
     * [.then(res, [rej])](#PublishedPromise+then) ⇒ <code>Promise</code>
     * [.catch(rej)](#PublishedPromise+catch) ⇒ <code>Promise</code>
     * [.finally(fin)](#PublishedPromise+finally) ⇒ <code>Promise</code>
-    * [.contains(value, [bipredicate])](#PublishedPromise+contains) ⇒ <code>Promise</code>
 
 <a name="PublishedPromise+resolve"></a>
 
@@ -204,26 +204,6 @@ Finalize the PublishedPromise
 | --- | --- |
 | fin | <code>function</code> | 
 
-<a name="PublishedPromise+contains"></a>
-
-### publishedPromise.contains(value, [bipredicate]) ⇒ <code>Promise</code>
-Tests the resolved value of a Promise and a given value with a given function
-and resolves to the function's result.
-
-If the function is not provided, `contains` will perform an equality comparison.
-
-**Kind**: instance method of [<code>PublishedPromise</code>](#PublishedPromise)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| value | <code>\*</code> | the value to be compared with the Promise' resolved value |
-| [bipredicate] | <code>function</code> | a function that compares both the resolved value and the given value. |
-
-**Example**  
-```js
-Promise.resolve(50).contains(50);
-Promise.resolve(50).contains(50, (a, b) => a % b == 0);
-```
 <a name="external_Promise"></a>
 
 ## Promise
@@ -241,6 +221,7 @@ The Promise object represents the eventual completion (or failure) of an asynchr
         * [.contains(value, [bipredicate])](#external_Promise+contains) ⇒ <code>Promise</code>
         * [.delay(amount)](#external_Promise+delay) ⇒ <code>Promise</code>
         * [.defer()](#external_Promise+defer) ⇒ <code>Promise</code>
+        * [.timeout(amount)](#external_Promise+timeout) ⇒ <code>Promise</code>
     * _static_
         * [.compare(a, b, comparator)](#external_Promise.compare) ⇒ <code>Promise</code>
         * [.equals(a, b)](#external_Promise.equals) ⇒ <code>Promise</code>
@@ -289,6 +270,25 @@ Promise.resolve(50).delay(5000);
 Creates a DeferredPromise whose value depends on the fulfillment of the given Promise.
 
 **Kind**: instance method of [<code>Promise</code>](#external_Promise)  
+**Example**  
+```js
+Promise.resolve(50).defer().delay(5000);
+```
+<a name="external_Promise+timeout"></a>
+
+### promise.timeout(amount) ⇒ <code>Promise</code>
+Rejects if the given Promise didn't fulfill within a given timeout. Otherwise, it resolves with the given Promise.
+
+**Kind**: instance method of [<code>Promise</code>](#external_Promise)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| amount | <code>Number</code> | the time in milliseconds. |
+
+**Example**  
+```js
+Promise.timer(5000).timeout(2500);
+```
 <a name="external_Promise.compare"></a>
 
 ### Promise.compare(a, b, comparator) ⇒ <code>Promise</code>
@@ -336,7 +336,7 @@ Creates a DeferredPromise
 **Kind**: static method of [<code>Promise</code>](#external_Promise)  
 **Example**  
 ```js
-Promise.deferred(() => Promise.resolve("Success"));
+Promise.deferred(res => res("Hello World"));
 ```
 <a name="external_Promise.publish"></a>
 
@@ -344,6 +344,14 @@ Promise.deferred(() => Promise.resolve("Success"));
 Creates a PublishedPromise which allows asynchronous fulfillment.
 
 **Kind**: static method of [<code>Promise</code>](#external_Promise)  
+**Example**  
+```js
+let promise = Promise.publish();
+promise.then(x => {
+    console.log("Resolved: "..x)
+})
+promise.resolve(50);
+```
 <a name="external_Promise.timer"></a>
 
 ### Promise.timer(amount) ⇒ <code>Promise</code>
@@ -354,3 +362,8 @@ Creates a Promise that resolves after a significant amount of time
 | Param | Type | Description |
 | --- | --- | --- |
 | amount | <code>Number</code> | the time in milliseconds. |
+
+**Example**  
+```js
+await Promise.timer(5000);
+```
