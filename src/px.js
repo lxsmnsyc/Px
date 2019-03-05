@@ -26,10 +26,50 @@
  * @copyright Alexis Munsayac 2019
  */
 /**
+ * Executor callback for Promises
+ * @callback PromiseExecutor
+ * @param {Function=} resolve Resolves the Promise with the given value.
+ * @param {Function=} reject Rejects the Promise with the given value.
+ */
+/**
+ * a callback for resolved values.
+ * @callback OnResolve
+ * @param {*} x the resolved Promise value
+ */
+/**
+ * a callback for rejected values.
+ * @callback OnReject
+ * @param {*} x the rejected Promise value
+ */
+/**
+ * a callback that is executed on fulfillment.
+ * @callback onFinally
+ */
+/**
+ * a callback for testing the amount of retries and the rejection value of the retried DeferredPromise.
+ * @callback RetryTester
+ * @param {Number} tries the amount of current retries for the DeferredPromise
+ * @param {*} value the rejection value
+ */
+/**
+ * a callback that compares the fulfilled value of the Promise against the given value
+ * @callback ContainsTester
+ * @param {*} fulfilledValue the fulfilled value of the Promise
+ * @param {*} sampleValue the sample value expected from the Promise
+ */
+/**
+ * a callback that compares the fulfilled values of the two Promises.
+ * @callback CompareTester
+ * @param {*} valueA the fulfilled value of the first Promise
+ * @param {*} valueB the fulfilled value of the second Promise
+ */
+/**
  * @class
  * @clasdesc
  * DeferredPromise is a Promise that doesn't execute the supplied function to its constructor.
  * DeferredPromise executes the function whenever a then, catch, or finally is called upon it.
+ * 
+ * @param {PromiseExecutor} executor a function that is passed to a Promise constructor.
  */
 class DeferredPromise{
     constructor(fn){
@@ -53,8 +93,8 @@ class DeferredPromise{
     }
     /**
      * Attaches callbacks to the PublishedPromise
-     * @param {Function} res - onResolve function
-     * @param {Function=} rej - onReject function
+     * @param {OnResolve} res - onResolve function
+     * @param {OnReject=} rej - onReject function
      * @returns {Promise} 
      */
     then(res, rej){
@@ -63,7 +103,7 @@ class DeferredPromise{
     /**
      * Catches the rejection value of the PublishedPromise
      * 
-     * @param {Function} rej - onReject function
+     * @param {OnReject} rej - onReject function
      * @returns {Promise}
      */
     catch(rej){
@@ -72,7 +112,7 @@ class DeferredPromise{
     /**
      * Finalize the DeferredPromise
      * 
-     * @param {Function} fin
+     * @param {onFinally} fin
      * @returns {Promise}
      */
     finally(fin){
@@ -88,7 +128,7 @@ class DeferredPromise{
      * @example
      * Promise.reject(50).defer().retry();
      * 
-     * @param {Function=} predicate - a function that returns a boolean
+     * @param {RetryTester=} predicate - a function that returns a boolean
      * @returns {Promise}
      */
     retry(fn){
@@ -116,7 +156,7 @@ class DeferredPromise{
      * @example
      * Promise.resolve(50).defer().delay(5000);
      * 
-     * @param {} amount 
+     * @param {Number} amount - the delay in milliseconds
      */
     delay(amount){
         return new DeferredPromise(res => {
@@ -140,6 +180,8 @@ class DeferredPromise{
  * @class
  * @classdesc
  * PublishedPromise is a Promise that you can resolve/reject asynchronously.
+ * 
+ * @param {PromiseExecutor} executor a function that is passed to a Promise constructor.
  */
 class PublishedPromise{
     constructor(fn){
@@ -168,8 +210,8 @@ class PublishedPromise{
     }
     /**
      * Attaches callbacks to the PublishedPromise
-     * @param {Function} res - onResolve function
-     * @param {Function=} rej - onReject function
+     * @param {OnResolve} res - onResolve function
+     * @param {OnReject=} rej - onReject function
      * @returns {Promise} 
      */
     then(res, rej){
@@ -178,7 +220,7 @@ class PublishedPromise{
     /**
      * Catches the rejection value of the PublishedPromise
      * 
-     * @param {Function} rej - onReject function
+     * @param {OnReject} rej - onReject function
      * @returns {Promise}
      */
     catch(rej){
@@ -187,7 +229,7 @@ class PublishedPromise{
     /**
      * Finalize the PublishedPromise
      * 
-     * @param {Function} fin
+     * @param {onFinally} fin
      * @returns {Promise}
      */
     finally(fin){
@@ -221,7 +263,7 @@ class PublishedPromise{
  * Promise.resolve(50).contains(50, (a, b) => a % b == 0);
  * 
  * @param {*} value - the value to be compared with the Promise' resolved value
- * @param {Function=} bipredicate - a function that compares both the resolved value and the given value.
+ * @param {ContainsTester=} bipredicate - a function that compares both the resolved value and the given value.
  * @returns {Promise}
  */
 Promise.prototype.contains = function (value, bipredicate){
@@ -264,7 +306,7 @@ Promise.prototype.delay = function (amount){
  * 
  * @param {!Promise} a - The Promise to be compared with
  * @param {!Promise} b - The Promise to be compared with
- * @param {!Function} comparator - A function that compares the resolved values of the two Promises
+ * @param {!CompareTester} comparator - A function that compares the resolved values of the two Promises
  * @returns {Promise}
  */
 Promise.compare = function (a, b, comparator){
@@ -295,6 +337,7 @@ Promise.equals = function (a, b){
  * @example
  * Promise.deferred(res => res("Hello World"));
  * 
+ * @param {PromiseExecutor} the executor function for the DeferredPromise 
  * @return {DeferredPromise}
  */
 Promise.deferred = function (fn){
@@ -324,6 +367,7 @@ Promise.prototype.defer = function (){
  *     console.log("Resolved: "..x)
  * })
  * promise.resolve(50);
+ * @param {PromiseExecutor} the executor function for the PublishedPromise
  * @return {PublishedPromise}
  */
 Promise.publish = function (fn){
