@@ -8,7 +8,6 @@ Extension functions for JS Promise
 [![codecov](https://codecov.io/gh/LXSMNSYC/Px/branch/master/graph/badge.svg)](https://codecov.io/gh/LXSMNSYC/Px)
 [![HitCount](http://hits.dwyl.io/lxsmnsyc/Px.svg)](http://hits.dwyl.io/lxsmnsyc/Px)
 
-[![Known Vulnerabilities](https://snyk.io/test/github/LXSMNSYC/Px/badge.svg?targetFile=package.json)](https://snyk.io/test/github/LXSMNSYC/Px?targetFile=package.json)
 [![devDependencies Status](https://david-dm.org/lxsmnsyc/px/dev-status.svg)](https://david-dm.org/lxsmnsyc/px?type=dev)
 ## Introduction
 
