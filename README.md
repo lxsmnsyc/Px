@@ -28,7 +28,7 @@ let Px = require('promise-ex');
 
 CDN
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-ex@0.1.0/index.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-ex@0.3.2/index.min.js"></script>
 ```
 
 ## Changelogs
