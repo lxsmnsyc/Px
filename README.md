@@ -1,8 +1,12 @@
 # Px
 Extension functions for JS Promise
 
+[![https://nodei.co/npm/promise-ex.png?downloads=true&downloadRank=true&stars=true](https://nodei.co/npm/promise-ex.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/promise-ex)
+
 [![](https://data.jsdelivr.com/v1/package/npm/promise-ex/badge)](https://www.jsdelivr.com/package/npm/promise-ex)
 [![Build Status](https://travis-ci.org/LXSMNSYC/Px.svg?branch=master)](https://travis-ci.org/LXSMNSYC/Px)
+[![HitCount](http://hits.dwyl.io/lxsmnsyc/Px.svg)](http://hits.dwyl.io/lxsmnsyc/Px)
+[![Known Vulnerabilities](https://snyk.io/test/github/LXSMNSYC/Px/badge.svg?targetFile=package.json)](https://snyk.io/test/github/LXSMNSYC/Px?targetFile=package.json)
 
 ## Introduction
 

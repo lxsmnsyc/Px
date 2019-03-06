@@ -365,7 +365,7 @@ Promise.deferred = function (fn){
 /**
  * @function external:Promise#defer
  * @description
- * Creates a DeferredPromise whose value depends on the fulfillment of the given Promise.
+ * Transforms the fulfillment value into a DeferredPromise that fulfills the value.
  * @example
  * Promise.resolve(50).defer().delay(5000);
  * @return {Promise}
@@ -374,7 +374,7 @@ Promise.prototype.defer = function (){
     return this.then(
         x => DeferredPromise.resolve(x),
         x => DeferredPromise.reject(x)
-    )
+    );
 }
 /**
  * @function external:Promise.publish
