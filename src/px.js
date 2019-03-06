@@ -506,12 +506,12 @@ Promise.delayedResolve = function (value, amount){
 }
 
 /**
- * @function external:Promise.delayedResolve
+ * @function external:Promise.delayedReject
  * @description
  * Rejects the promise after a significant amount of time.
  * 
  * @example
- * Promise.delayedResolve("Expired after 100ms", 100);
+ * Promise.delayedReject("Expired after 100ms", 100);
  * 
  * @param {*} value the value to be rejected.
  * @param {Number} amount the amount of time in milliseconds
