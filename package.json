@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/LXSMNSYC/Px#readme",
   "dependencies": {
+  },
+  "devDependencies": {
+    "nyc": "^13.3.0",
     "docdash": "^1.0.3",
     "jsdoc": "^3.5.5",
     "mocha": "^6.0.2"
-  },
-  "devDependencies": {
-    "nyc": "^13.3.0"
   }
 }
