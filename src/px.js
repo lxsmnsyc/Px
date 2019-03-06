@@ -486,3 +486,39 @@ Promise.fromCallable = function (executor){
 Promise.fromCallableDeferred = function (executor){
     return DeferredPromise.fromCallable(executor);
 }
+
+/**
+ * @function external:Promise.delayedResolve
+ * @description
+ * Resolves the promise after a significant amount of time.
+ * 
+ * @example
+ * Promise.delayedResolve("Expired after 100ms", 100);
+ * 
+ * @param {*} value the value to be resolved.
+ * @param {Number} amount the amount of time in milliseconds
+ * @returns {Promise}
+ */
+Promise.delayedResolve = function (value, amount){
+    return new Promise(res => {
+        setTimeout(res, amount, value);
+    });
+}
+
+/**
+ * @function external:Promise.delayedResolve
+ * @description
+ * Rejects the promise after a significant amount of time.
+ * 
+ * @example
+ * Promise.delayedResolve("Expired after 100ms", 100);
+ * 
+ * @param {*} value the value to be rejected.
+ * @param {Number} amount the amount of time in milliseconds
+ * @returns {Promise}
+ */
+Promise.delayedReject = function (value, amount){
+    return new Promise((res, rej) => {
+        setTimeout(res, amount, value);
+    });
+}
