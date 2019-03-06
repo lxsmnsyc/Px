@@ -1,6 +1,6 @@
 {
   "name": "promise-ex",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Extensions for JS Promise",
   "main": "index.js",
   "scripts": {
@@ -21,8 +21,7 @@
     "url": "https://github.com/LXSMNSYC/Px/issues"
   },
   "homepage": "https://github.com/LXSMNSYC/Px#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "nyc": "^13.3.0",
     "docdash": "^1.0.3",
