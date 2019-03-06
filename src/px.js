@@ -523,8 +523,8 @@ Promise.delayedResolve = function (value, amount){
  * @returns {Promise}
  */
 Promise.delayedReject = function (value, amount){
-    return new Promise((res) => {
-        setTimeout(res, amount, value);
+    return new Promise((res, rej) => {
+        setTimeout(rej, amount, value);
     });
 };
 
