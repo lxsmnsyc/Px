@@ -178,9 +178,9 @@ export class DeferredPromise{
      * @param {Number} amount - the delay in milliseconds
      */
     delay(amount){
-        return new DeferredPromise(res => {
+        return new DeferredPromise((res,rej) => {
             setTimeout(() => {
-                res(new Promise(supplier));
+                this._supplier(res, rej);
             }, amount);
         })
     }
@@ -243,7 +243,7 @@ export class PublishedPromise{
      * @returns {Promise}
      */
     catch(rej){
-        return this._promise.then(res, rej);
+        return this._promise.catch(rej);
     }
     /**
      * Finalize the PublishedPromise
@@ -521,4 +521,37 @@ Promise.delayedReject = function (value, amount){
     return new Promise((res, rej) => {
         setTimeout(res, amount, value);
     });
+}
+
+/**
+ * A tester function that is to be passed to {@link Promise#test}
+ * 
+ * @callback PromiseTester
+ * @param {*} value - the fulfilled value of the given Promise
+ * @param {boolean} isResolved - a boolean that checks whether the given value was a resolved value or not.
+ * @returns {boolean} 
+ */
+
+/**
+ * @function external:Promise#test
+ * @description
+ * Tests the resolve/reject of the given Promise through a callback function.
+ * If the result is true, the value is passed to a new resolved Promise.
+ * If the result is false, the value is passed to a new rejected Promise.
+ * 
+ * @example 
+ * Promise.resolve(50).test(x => x == 50).then(x => {
+ *     console.log("Resolved 50");
+ * })
+ * 
+ * @param {PromiseTester} tester a tester callback
+ */
+Promise.prototype.test = function (tester){
+    if(typeof tester === "function"){
+        return this.then(
+            x => new Promise((res, rej) => tester(x, true) ? res(x) : rej(x)),
+            x => new Promise((res, rej) => tester(x, false) ? res(x) : rej(x))
+        );
+    }
+    return this;
 }

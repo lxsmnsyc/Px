@@ -30,6 +30,16 @@ CDN
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-ex@0.1.0/index.min.js"></script>
 ```
 
+## Changelogs
+* 0.3.0
+  * Promise.test 
+  * Fix on comments
+  * Fixed DeferredPromise.delay only resolving
+* 0.2.0
+  * Delayed Resolve and Reject
+* 0.1.0
+  * Initial Release
+
 ## Build
 First, run install the dependencies:
 ```

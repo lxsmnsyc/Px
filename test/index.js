@@ -18,6 +18,25 @@ describe('Promise', function (){
             assert(Promise.compare(A, B, (x, y) => x == y) instanceof Promise);
         });
     });
+    describe('.equals', function (){
+        it('should return a Promise', function (){
+            let A = Promise.resolve(50);
+            let B = Promise.resolve(50);
+            assert(Promise.equals(A, B) instanceof Promise);
+        });
+        it('should resolve to true if the Promises values are equal', function (done){
+            let A = Promise.resolve(50);
+            let B = Promise.resolve(50);
+
+            Promise.equals(A, B).then(x => {
+                if(x){
+                    done();
+                } else {
+                    done(false);
+                }
+            });
+        });
+    });
     /**
      * @test {Promise.deferred}
      */
@@ -227,7 +246,64 @@ describe('Promise', function (){
                 }
             }, 100)
         });
+        it('should be rejected on the given time', function (done){
+            let fulfilled;
+            
+            Promise.reject(50).delay(100).catch(() => {
+                fulfilled = true;
+            });
+
+            setTimeout(() => {
+                if(fulfilled){
+                    done()
+                } else {
+                    done(false);
+                }
+            }, 100)
+        });
     });
+    describe('#test', function (){
+        it('should return a Promise', function (){
+            assert(Promise.resolve(100).test(x => x == 100) instanceof Promise);
+        });
+        it('should return the same Promise if the parameter received is not a function.', function (){
+            let p = Promise.resolve(100);
+
+            assert(p.test() === p);
+        });
+        it('should be resolved if the resolved Promise passes the test', async function (){
+            let success
+            await Promise.resolve(100).test(x => x == 100).then(x => {
+                success = x == 100;
+            });
+
+            assert(success);
+        });
+        it('should be resolved if the rejected Promise passes the test', async function (){
+            let success
+            await Promise.reject(100).test(x => x == 100).then(x => {
+                success = x == 100;
+            });
+
+            assert(success);
+        });
+        it('should be rejected if the resolved Promise fails the test', async function (){
+            let success
+            await Promise.resolve(100).test(x => x == 50).catch(x => {
+                success = x == 100;
+            });
+
+            assert(success);
+        });
+        it('should be rejected if the rejected Promise fails the test', async function (){
+            let success
+            await Promise.reject(100).test(x => x == 50).catch(x => {
+                success = x == 100;
+            });
+
+            assert(success);
+        });
+    })
     /**
      * @test {Promise#timeout}
      */
@@ -392,5 +468,85 @@ describe('DeferredPromise', function (){
         it('should return a DeferredPromise', function (){
             assert(DeferredPromise.reject(50).delay(100) instanceof DeferredPromise);
         }); 
+        it('should expire on the given timeout when callback attaches.', function (done){
+            let success;
+            DeferredPromise.resolve(50).delay(100).then(x => {
+                success = x == 50;
+            });
+
+            setTimeout(() => {
+                if(success){
+                    done();
+                } else {
+                    done(false);
+                }
+            }, 100);
+        }); 
+    });
+    describe('#toPromise', function (){
+        it('should return a Promise', function (){
+            assert(DeferredPromise.reject(50).toPromise() instanceof Promise);
+        });
+    });
+});
+
+describe('PublishedPromise', function (){
+    describe('#resolve', function (){
+        it('should asynchronously resolve', function (done){
+            let published = new PublishedPromise();
+
+            published.then(x => {
+                if(x == 50){
+                    done();
+                } else {
+                    done(false);
+                }
+            });
+
+            published.resolve(50);
+        });
+    }); 
+    describe('#reject', function (){
+        it('should asynchronously reject', function (done){
+            let published = new PublishedPromise();
+
+            published.catch(x => {
+                if(x == 50){
+                    done();
+                } else {
+                    done(false);
+                }
+            });
+
+            published.reject(50);
+        });
+    }); 
+    describe('#finally', function (){
+        it('should return a Promise', function (){
+            assert(new PublishedPromise().finally(() => "executed") instanceof Promise);
+        });
+        it('should be executed on a resolved PublishedPromise', function (done){
+            let published = new PublishedPromise();
+
+            published.finally(() => {
+                done();
+            });
+
+            published.resolve(50);
+        });
+        it('should be executed on a rejected PublishedPromise', function (done){
+            let published = new PublishedPromise();
+
+            published.finally(() => {
+                done();
+            });
+
+            published.reject(50);
+        });
+    });
+    describe('#toPromise', function (){
+        it('should return a Promise', function (){
+            assert(new PublishedPromise().toPromise() instanceof Promise);
+        });
     });
 });
