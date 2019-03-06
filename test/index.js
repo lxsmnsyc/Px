@@ -269,7 +269,7 @@ describe('Promise', function (){
         it('should return the same Promise if the parameter received is not a function.', function (){
             let p = Promise.resolve(100);
 
-            assert(p.test() ==== p);
+            assert(p.test() === p);
         });
         it('should be resolved if the resolved Promise passes the test', async function (){
             let success
