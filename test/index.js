@@ -180,8 +180,8 @@ describe('Promise', function (){
      * @test {Promise#defer}
      */
     describe('#defer', function (){
-        it('should return a DeferredPromise', function (){
-            assert(Promise.resolve(50).defer() instanceof DeferredPromise);
+        it('should return a Promise', function (){
+            assert(Promise.resolve(50).defer() instanceof Promise);
         });
     });
     /**
