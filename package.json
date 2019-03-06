@@ -4,7 +4,7 @@
   "description": "Extensions for JS Promise",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "nyc --reporter=html mocha -R spec",
     "generate-docs": "./node_modules/.bin/jsdoc src/px.js -c conf.json -d docs/ -r README.md"
   },
   "repository": {
@@ -25,5 +25,8 @@
     "docdash": "^1.0.3",
     "jsdoc": "^3.5.5",
     "mocha": "^6.0.2"
+  },
+  "devDependencies": {
+    "nyc": "^13.3.0"
   }
 }

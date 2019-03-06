@@ -181,7 +181,7 @@ export class DeferredPromise{
         return new DeferredPromise(res => {
             setTimeout(() => {
                 res(new Promise(supplier));
-            }, amount, );
+            }, amount);
         })
     }
     /**

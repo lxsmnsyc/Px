@@ -185,7 +185,7 @@ class DeferredPromise{
         return new DeferredPromise(res => {
             setTimeout(() => {
                 res(new Promise(supplier));
-            }, amount, );
+            }, amount);
         })
     }
     /**
@@ -369,7 +369,7 @@ Promise.deferred = function (fn){
 /**
  * @function external:Promise#defer
  * @description
- * Creates a DeferredPromise whose value depends on the fulfillment of the given Promise.
+ * Transforms the fulfillment value into a DeferredPromise that fulfills the value.
  * @example
  * Promise.resolve(50).defer().delay(5000);
  * @return {Promise}
@@ -378,7 +378,7 @@ Promise.prototype.defer = function (){
     return this.then(
         x => DeferredPromise.resolve(x),
         x => DeferredPromise.reject(x)
-    )
+    );
 };
 /**
  * @function external:Promise.publish
@@ -510,12 +510,12 @@ Promise.delayedResolve = function (value, amount){
 };
 
 /**
- * @function external:Promise.delayedResolve
+ * @function external:Promise.delayedReject
  * @description
  * Rejects the promise after a significant amount of time.
  * 
  * @example
- * Promise.delayedResolve("Expired after 100ms", 100);
+ * Promise.delayedReject("Expired after 100ms", 100);
  * 
  * @param {*} value the value to be rejected.
  * @param {Number} amount the amount of time in milliseconds

@@ -91,8 +91,11 @@ describe('Promise', function (){
      */
     describe('.fromCallableDeferred', function (){
         it('should return a DeferredPromise', function (){
-            assert(Promise.fromCallable(() => 50) instanceof Promise);
+            assert(Promise.fromCallableDeferred(() => 50) instanceof DeferredPromise);
         });
+        it('should returned a rejected DeferredPromise on error', function (){
+            assert(Promise.fromCallableDeferred(() => {throw "error";}) instanceof DeferredPromise);
+        })
     });
     /**
      * @test {Promise.publish}
@@ -183,6 +186,24 @@ describe('Promise', function (){
         it('should return a Promise', function (){
             assert(Promise.resolve(50).defer() instanceof Promise);
         });
+        it('should defer on resolved Promise', async function (){
+            let success;
+
+            await Promise.resolve(50).defer().then(x => {
+                success = x == 50;
+            });
+
+            assert(success);
+        });
+        it('should defer on rejected Promise', async function (){
+            let success;
+
+            await Promise.reject(50).defer().catch(x => {
+                success = x == 50;
+            });
+
+            assert(success);
+        });
     });
     /**
      * @test {Promise#delay}
@@ -232,5 +253,144 @@ describe('Promise', function (){
             
             assert(expired);
         });
+    });
+});
+
+describe('DeferredPromise', function (){
+    describe('.fromCallable', function (){
+        it('should return a DeferredPromise', function (){
+            assert(DeferredPromise.fromCallable(() => 50) instanceof DeferredPromise);
+        });
+        it('should returned a rejected DeferredPromise on error', function (){
+            assert(DeferredPromise.fromCallable(() => {throw "error";}) instanceof DeferredPromise);
+        })
+    });
+    describe('.resolve', function (){
+        it('should return a DeferredPromise', function (){
+            assert(DeferredPromise.resolve(50) instanceof DeferredPromise);
+        });
+        it('should return a resolved DeferredPromise', async function (){
+            let success;
+
+            await DeferredPromise.resolve(50).then(x => {
+                success = x == 50;
+            })
+
+            assert(success);
+        });
+    });
+    describe('.reject', function (){
+        it('should return a DeferredPromise', function (){
+            assert(DeferredPromise.reject(50) instanceof DeferredPromise);
+        });
+        it('should return a rejected DeferredPromise', async function (){
+            let success;
+
+            await DeferredPromise.reject(50).catch(x => {
+                success = x == 50;
+            })
+
+            assert(success);
+        });
+    });
+    describe('#catch', function (){
+        it('should return a Promise', function (){
+            assert(DeferredPromise.reject(50).catch(x => x) instanceof Promise);
+        });
+        it('should catch a rejected DeferredPromise', async function (){
+            let success;
+
+            await DeferredPromise.reject(50).catch(x => {
+                success = x == 50;
+            })
+
+            assert(success);
+        });
+    });
+    describe('#finally', function (){
+        it('should return a Promise', function (){
+            assert(DeferredPromise.resolve(50).finally(() => "executed") instanceof Promise);
+        });
+        it('should be executed on a resolved DeferredPromise', async function (){
+            let success;
+
+            await DeferredPromise.resolve(50).finally(() => {
+                success = true;
+                return true;
+            })
+
+            assert(success);
+        });
+        it('should be executed on a rejected DeferredPromise', async function (){
+            let success;
+
+            await DeferredPromise.reject(50).finally(() => {
+                success = true;
+                return true;
+            }).catch(x => x);
+
+            assert(success);
+        });
+    });
+
+    describe('#retry', function (){
+        it('should return a Promise', function (){
+            assert(DeferredPromise.reject(50).retry(x => x < 2) instanceof Promise);
+        }); 
+        it('should retry on a certain amount of tries before throwing the error', async function (){
+            let maxTries = parseInt(Math.random(100)) + 1;
+            let tries = 0;
+            let thrown;
+
+            await DeferredPromise.reject(50).retry(x => {
+                tries++;
+                return x < maxTries;
+            }).catch(x => {
+                thrown = x == 50;
+            });
+
+            assert(thrown);
+            assert(tries == maxTries);
+        }); 
+        it('should not retry on a resolved DeferredPromise', async function (){
+            let maxTries = parseInt(Math.random(100)) + 1;
+            let tries = 0;
+            let success;
+
+            await DeferredPromise.resolve(50).retry(x => {
+                tries++;
+                return x < maxTries;
+            }).then(x => {
+                success = x == 50;
+            });
+
+            assert(success);
+            assert(tries == 0);
+        }); 
+        it.skip('should retry infinitely on a rejected Promise if no functions are provided.', function (done){
+            let success = false;
+
+            setTimeout(() => {
+                done(!success)
+            }, 0);
+            DeferredPromise.reject(50).retry().then(x => {
+                success = x == 50;
+            });
+        }); 
+        it('should not retry infinitely on a resolved Promise if no functions are provided.', async function (){
+            let success = false;
+
+            await DeferredPromise.resolve(50).retry().then(x => {
+                success = x == 50;
+            });
+
+            assert(success);
+        }); 
+    });
+
+    describe('#delay', function (){
+        it('should return a DeferredPromise', function (){
+            assert(DeferredPromise.reject(50).delay(100) instanceof DeferredPromise);
+        }); 
     });
 });

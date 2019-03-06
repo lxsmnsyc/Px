@@ -3,8 +3,9 @@ node_js:
   - "8"
 install:
   - npm install -g mocha
-  - npm install -g istanbul
+  - npm install nyc --savedev
   - npm install -g codecov
 script:
-  - istanbul cover mocha --reporter lcovonly -- -R spec
+  - nyc npm test
+  - nyc report --reporter=text-lcov > coverage.lcov
   - codecov
