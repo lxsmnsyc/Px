@@ -1,6 +1,6 @@
 {
   "name": "promise-ex",
-  "version": "0.3.7",
+  "version": "0.3.6",
   "description": "Extensions for JS Promise",
   "main": "index.js",
   "scripts": {
