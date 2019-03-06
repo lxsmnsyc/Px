@@ -5,6 +5,7 @@ Extension functions for JS Promise
 
 [![](https://data.jsdelivr.com/v1/package/npm/promise-ex/badge)](https://www.jsdelivr.com/package/npm/promise-ex)
 [![Build Status](https://travis-ci.org/LXSMNSYC/Px.svg?branch=master)](https://travis-ci.org/LXSMNSYC/Px)
+[![codecov](https://codecov.io/gh/LXSMNSYC/Px/branch/master/graph/badge.svg)](https://codecov.io/gh/LXSMNSYC/Px)
 [![HitCount](http://hits.dwyl.io/lxsmnsyc/Px.svg)](http://hits.dwyl.io/lxsmnsyc/Px)
 [![Known Vulnerabilities](https://snyk.io/test/github/LXSMNSYC/Px/badge.svg?targetFile=package.json)](https://snyk.io/test/github/LXSMNSYC/Px?targetFile=package.json)
 
