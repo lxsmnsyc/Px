@@ -44,6 +44,7 @@
 /**
  * a callback that is executed on fulfillment.
  * @callback onFinally
+ * @returns {*}
  */
 /**
  * a callback for testing the amount of retries and 
@@ -51,18 +52,21 @@
  * @callback RetryTester
  * @param {Number} tries the amount of current retries for the DeferredPromise
  * @param {*} value the rejection value
+ * @returns {Boolean}
  */
 /**
  * a callback that compares the fulfilled value of the Promise against the given value
  * @callback ContainsTester
  * @param {*} fulfilledValue the fulfilled value of the Promise
  * @param {*} sampleValue the sample value expected from the Promise
+ * @returns {Boolean}
  */
 /**
  * a callback that compares the fulfilled values of the two Promises.
  * @callback CompareTester
  * @param {*} valueA the fulfilled value of the first Promise
  * @param {*} valueB the fulfilled value of the second Promise
+ * @returns {Boolean}
  */
 /**
  * @class
@@ -289,6 +293,7 @@ export class PublishedPromise{
  * @returns {Promise}
  */
 Promise.prototype.contains = function (value, bipredicate){
+    'use strict';
     if(typeof bipredicate === 'function'){
         return this.then(x => bipredicate(x, value));
     }
@@ -306,6 +311,7 @@ Promise.prototype.contains = function (value, bipredicate){
  * @returns {Promise}
  */
 Promise.prototype.delay = function (amount){
+    'use strict';
     return this.then(
         x => new Promise((res) => {
             setTimeout(res, amount, x);
@@ -333,6 +339,7 @@ Promise.prototype.delay = function (amount){
  * @returns {Promise}
  */
 Promise.compare = function (a, b, comparator){
+    'use strict';
     return Promise.all([a, b]).then(x => comparator(x[0], x[1]));
 };
 /**
@@ -351,6 +358,7 @@ Promise.compare = function (a, b, comparator){
  * @returns {Promise}
  */
 Promise.equals = function (a, b){
+    'use strict';
     return Promise.compare(a, b, (x, y) => x === y);
 };
 /**
@@ -364,6 +372,7 @@ Promise.equals = function (a, b){
  * @return {DeferredPromise}
  */
 Promise.deferred = function (fn){
+    'use strict';
     return new DeferredPromise(fn);
 };
 /**
@@ -375,6 +384,7 @@ Promise.deferred = function (fn){
  * @return {Promise}
  */
 Promise.prototype.defer = function (){
+    'use strict';
     return this.then(
         x => DeferredPromise.resolve(x),
         x => DeferredPromise.reject(x)
@@ -394,6 +404,7 @@ Promise.prototype.defer = function (){
  * @return {PublishedPromise}
  */
 Promise.publish = function (fn){
+    'use strict';
     return new PublishedPromise(fn);
 };
 /**
@@ -406,6 +417,7 @@ Promise.publish = function (fn){
  * @returns {Promise}
  */
 Promise.timer = function (amount){
+    'use strict';
     return new Promise(res => {
         setTimeout(res, amount, 0);
     });
@@ -421,6 +433,7 @@ Promise.timer = function (amount){
  * @returns {Promise}
  */
 Promise.prototype.timeout = function (amount){
+    'use strict';
     let success = false;
     this.then(() => {success = true;});
     return new Promise((res, rej) => {
@@ -438,6 +451,7 @@ Promise.prototype.timeout = function (amount){
  * Polyfill for finally method
  */
 Promise.prototype.finally = function(onFinally) {
+    'use strict';
     return this.then(
         /* onFulfilled */
         res => Promise.resolve(onFinally()).then(() => res),
@@ -465,6 +479,7 @@ Promise.prototype.finally = function(onFinally) {
   * @returns {Promise}
   */
 Promise.fromCallable = function (executor){
+    'use strict';
     let result;
     try{
         result = executor();
@@ -489,6 +504,7 @@ Promise.fromCallable = function (executor){
   * @returns {Promise}
   */
 Promise.fromCallableDeferred = function (executor){
+    'use strict';
     return DeferredPromise.fromCallable(executor);
 };
 
@@ -505,6 +521,7 @@ Promise.fromCallableDeferred = function (executor){
  * @returns {Promise}
  */
 Promise.delayedResolve = function (value, amount){
+    'use strict';
     return new Promise(res => {
         setTimeout(res, amount, value);
     });
@@ -523,6 +540,7 @@ Promise.delayedResolve = function (value, amount){
  * @returns {Promise}
  */
 Promise.delayedReject = function (value, amount){
+    'use strict';
     return new Promise((res, rej) => {
         setTimeout(rej, amount, value);
     });
@@ -553,6 +571,7 @@ Promise.delayedReject = function (value, amount){
  * @param {PromiseTester} tester a tester callback
  */
 Promise.prototype.test = function (tester){
+    'use strict';
     if(typeof tester === 'function'){
         return this.then(
             x => new Promise((res, rej) => tester(x, true) ? res(x) : rej(x)),

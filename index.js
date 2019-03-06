@@ -48,6 +48,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 /**
  * a callback that is executed on fulfillment.
  * @callback onFinally
+ * @returns {*}
  */
 /**
  * a callback for testing the amount of retries and 
@@ -55,18 +56,21 @@ Object.defineProperty(exports, '__esModule', { value: true });
  * @callback RetryTester
  * @param {Number} tries the amount of current retries for the DeferredPromise
  * @param {*} value the rejection value
+ * @returns {Boolean}
  */
 /**
  * a callback that compares the fulfilled value of the Promise against the given value
  * @callback ContainsTester
  * @param {*} fulfilledValue the fulfilled value of the Promise
  * @param {*} sampleValue the sample value expected from the Promise
+ * @returns {Boolean}
  */
 /**
  * a callback that compares the fulfilled values of the two Promises.
  * @callback CompareTester
  * @param {*} valueA the fulfilled value of the first Promise
  * @param {*} valueB the fulfilled value of the second Promise
+ * @returns {Boolean}
  */
 /**
  * @class
