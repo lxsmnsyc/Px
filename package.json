@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "generate-docs": "jsdoc src/px.js -c conf.json -d docs/ -r README.md"
+    "generate-docs": "./node_modules/.bin/jsdoc src/px.js -c conf.json -d docs/ -r README.md"
   },
   "repository": {
     "type": "git",
