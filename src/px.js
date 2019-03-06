@@ -46,7 +46,8 @@
  * @callback onFinally
  */
 /**
- * a callback for testing the amount of retries and the rejection value of the retried DeferredPromise.
+ * a callback for testing the amount of retries and 
+ * the rejection value of the retried DeferredPromise.
  * @callback RetryTester
  * @param {Number} tries the amount of current retries for the DeferredPromise
  * @param {*} value the rejection value
@@ -152,8 +153,8 @@ export class DeferredPromise{
      */
     retry(fn){
         let supplier = this._supplier;
-        if(typeof fn == "function"){
-            let tries = 0
+        if(typeof fn === 'function'){
+            let tries = 0;
             let resub = () => new Promise(supplier).then(
                 x => x,
                 x => fn(++tries, x) ? resub() : Promise.reject(x)
@@ -163,7 +164,7 @@ export class DeferredPromise{
         }
         let resub = () => new Promise(supplier).then(
             x => x,
-            x => resub()
+            () => resub()
         );
         return resub();
     }
@@ -182,7 +183,7 @@ export class DeferredPromise{
             setTimeout(() => {
                 this._supplier(res, rej);
             }, amount);
-        })
+        });
     }
     /**
      * @description
@@ -191,7 +192,7 @@ export class DeferredPromise{
      * @returns {Promise}
      */
     toPromise(){
-        return new Promise(this._supplier)
+        return new Promise(this._supplier);
     }
 }
 
@@ -208,10 +209,10 @@ export class PublishedPromise{
             this._resolve = res;
             this._reject = rej;
 
-            if(typeof fn === "function"){
-                fn(res, rej)
+            if(typeof fn === 'function'){
+                fn(res, rej);
             }
-        })
+        });
     }
     /**
      * Resolves the PublishedPromise
@@ -265,7 +266,8 @@ export class PublishedPromise{
     }
 }
 /**
- * The Promise object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.
+ * The Promise object represents the eventual completion (or failure) 
+ * of an asynchronous operation, and its resulting value.
  * @external Promise
  * @see {@link https://promisesaplus.com/}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise}
@@ -282,15 +284,16 @@ export class PublishedPromise{
  * Promise.resolve(50).contains(50, (a, b) => a % b == 0);
  * 
  * @param {*} value - the value to be compared with the Promise' resolved value
- * @param {ContainsTester=} bipredicate - a function that compares both the resolved value and the given value.
+ * @param {ContainsTester=} bipredicate 
+ * a function that compares both the resolved value and the given value.
  * @returns {Promise}
  */
 Promise.prototype.contains = function (value, bipredicate){
-    if(typeof bipredicate === "function"){
+    if(typeof bipredicate === 'function'){
         return this.then(x => bipredicate(x, value));
     }
-    return this.then(x => x == value);
-}
+    return this.then(x => x === value);
+};
 /**
  * @function external:Promise#delay 
  * @description
@@ -304,14 +307,14 @@ Promise.prototype.contains = function (value, bipredicate){
  */
 Promise.prototype.delay = function (amount){
     return this.then(
-        x => new Promise((res, rej) => {
+        x => new Promise((res) => {
             setTimeout(res, amount, x);
         }),
         x => new Promise((res, rej) => {
             setTimeout(rej, amount, x);
         })
     );
-}
+};
 /**
  * @function external:Promise.compare 
  * @description
@@ -325,12 +328,13 @@ Promise.prototype.delay = function (amount){
  * 
  * @param {!Promise} a - The Promise to be compared with
  * @param {!Promise} b - The Promise to be compared with
- * @param {!CompareTester} comparator - A function that compares the resolved values of the two Promises
+ * @param {!CompareTester} comparator 
+ * A function that compares the resolved values of the two Promises
  * @returns {Promise}
  */
 Promise.compare = function (a, b, comparator){
     return Promise.all([a, b]).then(x => comparator(x[0], x[1]));
-}
+};
 /**
  * @function external:Promise.equals 
  * @description
@@ -347,8 +351,8 @@ Promise.compare = function (a, b, comparator){
  * @returns {Promise}
  */
 Promise.equals = function (a, b){
-    return Promise.compare(a, b, (x, y) => x == y);
-}
+    return Promise.compare(a, b, (x, y) => x === y);
+};
 /**
  * @function external:Promise.deferred
  * @description
@@ -361,7 +365,7 @@ Promise.equals = function (a, b){
  */
 Promise.deferred = function (fn){
     return new DeferredPromise(fn);
-}
+};
 /**
  * @function external:Promise#defer
  * @description
@@ -375,7 +379,7 @@ Promise.prototype.defer = function (){
         x => DeferredPromise.resolve(x),
         x => DeferredPromise.reject(x)
     );
-}
+};
 /**
  * @function external:Promise.publish
  * @description
@@ -391,7 +395,7 @@ Promise.prototype.defer = function (){
  */
 Promise.publish = function (fn){
     return new PublishedPromise(fn);
-}
+};
 /**
  * @function external:Promise.timer
  * @description
@@ -405,11 +409,12 @@ Promise.timer = function (amount){
     return new Promise(res => {
         setTimeout(res, amount, 0);
     });
-}
+};
 /**
  * @function external:Promise#timeout
  * @description
- * Rejects if the given Promise didn't fulfill within a given timeout. Otherwise, it resolves with the given Promise.
+ * Rejects if the given Promise didn't fulfill within a given timeout. 
+ * Otherwise, it resolves with the given Promise.
  * @example
  * Promise.timer(5000).timeout(2500);
  * @param {Number} amount - the time in milliseconds.
@@ -417,17 +422,17 @@ Promise.timer = function (amount){
  */
 Promise.prototype.timeout = function (amount){
     let success = false;
-    this.then(x => {success = true});
+    this.then(() => {success = true;});
     return new Promise((res, rej) => {
         setTimeout(() => {
             if(success){
                 res(this);
             } else {
-                rej(new Error("Promise TimeoutException"));
+                rej(new Error('Promise TimeoutException'));
             }
         }, amount);
-    })
-}
+    });
+};
 
 /**
  * Polyfill for finally method
@@ -467,7 +472,7 @@ Promise.fromCallable = function (executor){
         return Promise.reject(e);
     }
     return Promise.resolve(result);
-}
+};
 
 
  /**
@@ -485,7 +490,7 @@ Promise.fromCallable = function (executor){
   */
 Promise.fromCallableDeferred = function (executor){
     return DeferredPromise.fromCallable(executor);
-}
+};
 
 /**
  * @function external:Promise.delayedResolve
@@ -503,7 +508,7 @@ Promise.delayedResolve = function (value, amount){
     return new Promise(res => {
         setTimeout(res, amount, value);
     });
-}
+};
 
 /**
  * @function external:Promise.delayedReject
@@ -518,17 +523,18 @@ Promise.delayedResolve = function (value, amount){
  * @returns {Promise}
  */
 Promise.delayedReject = function (value, amount){
-    return new Promise((res, rej) => {
+    return new Promise((res) => {
         setTimeout(res, amount, value);
     });
-}
+};
 
 /**
  * A tester function that is to be passed to {@link Promise#test}
  * 
  * @callback PromiseTester
  * @param {*} value - the fulfilled value of the given Promise
- * @param {boolean} isResolved - a boolean that checks whether the given value was a resolved value or not.
+ * @param {boolean} isResolved 
+ * a boolean that checks whether the given value was a resolved value or not.
  * @returns {boolean} 
  */
 
@@ -547,11 +553,11 @@ Promise.delayedReject = function (value, amount){
  * @param {PromiseTester} tester a tester callback
  */
 Promise.prototype.test = function (tester){
-    if(typeof tester === "function"){
+    if(typeof tester === 'function'){
         return this.then(
             x => new Promise((res, rej) => tester(x, true) ? res(x) : rej(x)),
             x => new Promise((res, rej) => tester(x, false) ? res(x) : rej(x))
         );
     }
     return this;
-}
+};

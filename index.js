@@ -50,7 +50,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
  * @callback onFinally
  */
 /**
- * a callback for testing the amount of retries and the rejection value of the retried DeferredPromise.
+ * a callback for testing the amount of retries and 
+ * the rejection value of the retried DeferredPromise.
  * @callback RetryTester
  * @param {Number} tries the amount of current retries for the DeferredPromise
  * @param {*} value the rejection value
@@ -156,7 +157,7 @@ class DeferredPromise{
      */
     retry(fn){
         let supplier = this._supplier;
-        if(typeof fn == "function"){
+        if(typeof fn === 'function'){
             let tries = 0;
             let resub = () => new Promise(supplier).then(
                 x => x,
@@ -167,7 +168,7 @@ class DeferredPromise{
         }
         let resub = () => new Promise(supplier).then(
             x => x,
-            x => resub()
+            () => resub()
         );
         return resub();
     }
@@ -186,7 +187,7 @@ class DeferredPromise{
             setTimeout(() => {
                 this._supplier(res, rej);
             }, amount);
-        })
+        });
     }
     /**
      * @description
@@ -195,7 +196,7 @@ class DeferredPromise{
      * @returns {Promise}
      */
     toPromise(){
-        return new Promise(this._supplier)
+        return new Promise(this._supplier);
     }
 }
 
@@ -212,7 +213,7 @@ class PublishedPromise{
             this._resolve = res;
             this._reject = rej;
 
-            if(typeof fn === "function"){
+            if(typeof fn === 'function'){
                 fn(res, rej);
             }
         });
@@ -269,7 +270,8 @@ class PublishedPromise{
     }
 }
 /**
- * The Promise object represents the eventual completion (or failure) of an asynchronous operation, and its resulting value.
+ * The Promise object represents the eventual completion (or failure) 
+ * of an asynchronous operation, and its resulting value.
  * @external Promise
  * @see {@link https://promisesaplus.com/}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise}
@@ -286,14 +288,15 @@ class PublishedPromise{
  * Promise.resolve(50).contains(50, (a, b) => a % b == 0);
  * 
  * @param {*} value - the value to be compared with the Promise' resolved value
- * @param {ContainsTester=} bipredicate - a function that compares both the resolved value and the given value.
+ * @param {ContainsTester=} bipredicate 
+ * a function that compares both the resolved value and the given value.
  * @returns {Promise}
  */
 Promise.prototype.contains = function (value, bipredicate){
-    if(typeof bipredicate === "function"){
+    if(typeof bipredicate === 'function'){
         return this.then(x => bipredicate(x, value));
     }
-    return this.then(x => x == value);
+    return this.then(x => x === value);
 };
 /**
  * @function external:Promise#delay 
@@ -308,7 +311,7 @@ Promise.prototype.contains = function (value, bipredicate){
  */
 Promise.prototype.delay = function (amount){
     return this.then(
-        x => new Promise((res, rej) => {
+        x => new Promise((res) => {
             setTimeout(res, amount, x);
         }),
         x => new Promise((res, rej) => {
@@ -329,7 +332,8 @@ Promise.prototype.delay = function (amount){
  * 
  * @param {!Promise} a - The Promise to be compared with
  * @param {!Promise} b - The Promise to be compared with
- * @param {!CompareTester} comparator - A function that compares the resolved values of the two Promises
+ * @param {!CompareTester} comparator 
+ * A function that compares the resolved values of the two Promises
  * @returns {Promise}
  */
 Promise.compare = function (a, b, comparator){
@@ -351,7 +355,7 @@ Promise.compare = function (a, b, comparator){
  * @returns {Promise}
  */
 Promise.equals = function (a, b){
-    return Promise.compare(a, b, (x, y) => x == y);
+    return Promise.compare(a, b, (x, y) => x === y);
 };
 /**
  * @function external:Promise.deferred
@@ -413,7 +417,8 @@ Promise.timer = function (amount){
 /**
  * @function external:Promise#timeout
  * @description
- * Rejects if the given Promise didn't fulfill within a given timeout. Otherwise, it resolves with the given Promise.
+ * Rejects if the given Promise didn't fulfill within a given timeout. 
+ * Otherwise, it resolves with the given Promise.
  * @example
  * Promise.timer(5000).timeout(2500);
  * @param {Number} amount - the time in milliseconds.
@@ -421,16 +426,16 @@ Promise.timer = function (amount){
  */
 Promise.prototype.timeout = function (amount){
     let success = false;
-    this.then(x => {success = true;});
+    this.then(() => {success = true;});
     return new Promise((res, rej) => {
         setTimeout(() => {
             if(success){
                 res(this);
             } else {
-                rej(new Error("Promise TimeoutException"));
+                rej(new Error('Promise TimeoutException'));
             }
         }, amount);
-    })
+    });
 };
 
 /**
@@ -522,7 +527,7 @@ Promise.delayedResolve = function (value, amount){
  * @returns {Promise}
  */
 Promise.delayedReject = function (value, amount){
-    return new Promise((res, rej) => {
+    return new Promise((res) => {
         setTimeout(res, amount, value);
     });
 };
@@ -532,7 +537,8 @@ Promise.delayedReject = function (value, amount){
  * 
  * @callback PromiseTester
  * @param {*} value - the fulfilled value of the given Promise
- * @param {boolean} isResolved - a boolean that checks whether the given value was a resolved value or not.
+ * @param {boolean} isResolved 
+ * a boolean that checks whether the given value was a resolved value or not.
  * @returns {boolean} 
  */
 
@@ -551,7 +557,7 @@ Promise.delayedReject = function (value, amount){
  * @param {PromiseTester} tester a tester callback
  */
 Promise.prototype.test = function (tester){
-    if(typeof tester === "function"){
+    if(typeof tester === 'function'){
         return this.then(
             x => new Promise((res, rej) => tester(x, true) ? res(x) : rej(x)),
             x => new Promise((res, rej) => tester(x, false) ? res(x) : rej(x))

@@ -32,6 +32,8 @@ CDN
 ```
 
 ## Changelogs
+* 0.3.5
+  * AirBnb style 
 * 0.3.0
   * Promise.test 
   * Fix on comments
