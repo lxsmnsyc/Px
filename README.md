@@ -40,6 +40,10 @@ CDN
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-ex@0.3.7/index.min.js"></script>
 ```
 
+## Example
+
+Working example can be found at [RunKit](https://runkit.com/lxsmnsyc/5c7f46ce7310350012d0860c).
+
 ## Changelogs
 
 * 0.3.6
