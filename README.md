@@ -10,6 +10,7 @@ Extension functions for JS Promise
 [![HitCount](http://hits.dwyl.io/lxsmnsyc/Px.svg)](http://hits.dwyl.io/lxsmnsyc/Px)
 
 [![devDependencies Status](https://david-dm.org/lxsmnsyc/px/dev-status.svg)](https://david-dm.org/lxsmnsyc/px?type=dev)
+[![Inline docs](http://inch-ci.org/github/lxsmnsyc/px.svg?branch=master)](http://inch-ci.org/github/lxsmnsyc/px)
 
 ## Introduction
 
