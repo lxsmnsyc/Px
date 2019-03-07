@@ -87,7 +87,10 @@ class DeferredPromise{
     /**
      * @description
      * Creates a DeferredPromise which resolves the given value.
+     * @example 
+     * DeferredPromise.resolve("Hello World").then(console.log);
      * @param {*} value 
+     * @returns {DeferredPromise}
      */
     static resolve(value){
         return new DeferredPromise(res => res(value));
@@ -95,7 +98,10 @@ class DeferredPromise{
     /**
      * @description
      * Creates a DeferredPromise which rejects the given value.
+     * @example 
+     * DeferredPromise.reject("Hello World").catch(console.log);
      * @param {*} value 
+     * @returns {DeferredPromise}
      */
     static reject(value){
         return new DeferredPromise((res, rej) => rej(value));
@@ -139,7 +145,9 @@ class DeferredPromise{
     }
     /**
      * Finalize the DeferredPromise
-     * 
+     * @example
+     * DeferredPromise.resolve(50).finally(() => console.log("Finally"));
+     * DeferredPromise.reject(50).finally(() => console.log("Finally"));
      * @param {onFinally} fin
      * @returns {Promise}
      */
@@ -156,7 +164,7 @@ class DeferredPromise{
      * @example
      * Promise.reject(50).defer().retry();
      * 
-     * @param {RetryTester=} predicate - a function that returns a boolean
+     * @param {RetryTester=} fn  - a function that returns a boolean
      * @returns {Promise}
      */
     retry(fn){
@@ -224,6 +232,10 @@ class PublishedPromise{
     }
     /**
      * Resolves the PublishedPromise
+     * @example
+     * let publish = new PublishedPromise();
+     * publish.then(console.log);
+     * publish.resolve("Hello World");
      * @param {*} value 
      */
     resolve(value){
@@ -231,6 +243,10 @@ class PublishedPromise{
     }
     /**
      * Rejects the PublishedPromise
+     * @example
+     * let publish = new PublishedPromise();
+     * publish.catch(console.log);
+     * publish.reject("Hello World");
      * @param {*} value 
      */
     reject(value){
@@ -256,7 +272,10 @@ class PublishedPromise{
     }
     /**
      * Finalize the PublishedPromise
-     * 
+     * @example
+     * let publish = new PublishedPromise();
+     * publish.finally(() => console.log("Finally"));
+     * publish.resolve("Hello World");
      * @param {onFinally} fin
      * @returns {Promise}
      */
@@ -368,7 +387,7 @@ Promise.equals = function (a, b){
  * @example
  * Promise.deferred(res => res("Hello World"));
  * 
- * @param {PromiseExecutor} executor - the executor function for the DeferredPromise 
+ * @param {PromiseExecutor} fn - the executor function for the DeferredPromise 
  * @return {DeferredPromise}
  */
 Promise.deferred = function (fn){
@@ -398,7 +417,7 @@ Promise.prototype.defer = function (){
  *     console.log("Resolved: "..x)
  * })
  * promise.resolve(50);
- * @param {PromiseExecutor} executor - the executor function for the PublishedPromise
+ * @param {PromiseExecutor} fn - the executor function for the PublishedPromise
  * @return {PublishedPromise}
  */
 Promise.publish = function (fn){
@@ -444,6 +463,11 @@ Promise.prototype.timeout = function (amount){
 
 /**
  * Polyfill for finally method
+ * @example
+ * Promise.resolve("Hello World").then(console.log);
+ * Promise.reject("Hello World").catch(console.log);
+ * @param {onFinally} onFinally
+ * @returns {Promise}
  */
 Promise.prototype.finally = function(onFinally) {
     return this.then(
