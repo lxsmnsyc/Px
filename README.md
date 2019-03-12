@@ -5,9 +5,15 @@ Extension functions for JS Promise
 [![https://nodei.co/npm/promise-ex.png?downloads=true&downloadRank=true&stars=true](https://nodei.co/npm/promise-ex.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/promise-ex)
 
 [![JSDeliver Hits](https://data.jsdelivr.com/v1/package/npm/promise-ex/badge)](https://www.jsdelivr.com/package/npm/promise-ex)
-[![Build Status](https://travis-ci.org/LXSMNSYC/Px.svg?branch=master)](https://travis-ci.org/LXSMNSYC/Px)
-[![codecov](https://codecov.io/gh/LXSMNSYC/Px/branch/master/graph/badge.svg)](https://codecov.io/gh/LXSMNSYC/Px)
 [![HitCount](http://hits.dwyl.io/lxsmnsyc/Px.svg)](http://hits.dwyl.io/lxsmnsyc/Px)
+
+
+| Platform | Build Status |
+| --- | --- |
+| Linux | [![Build Status](https://travis-ci.org/LXSMNSYC/Px.svg?branch=master)](https://travis-ci.org/LXSMNSYC/Px) |
+| Windows | [![Build status](https://ci.appveyor.com/api/projects/status/0sq5gw4s1yo3n1le?svg=true)](https://ci.appveyor.com/project/LXSMNSYC/px) |
+
+[![codecov](https://codecov.io/gh/LXSMNSYC/Px/branch/master/graph/badge.svg)](https://codecov.io/gh/LXSMNSYC/Px)
 
 [![devDependencies Status](https://david-dm.org/lxsmnsyc/px/dev-status.svg)](https://david-dm.org/lxsmnsyc/px?type=dev)
 [![Inline docs](http://inch-ci.org/github/lxsmnsyc/px.svg?branch=master)](http://inch-ci.org/github/lxsmnsyc/px)
