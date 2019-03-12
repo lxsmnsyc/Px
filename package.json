@@ -4,8 +4,18 @@
   "description": "Extensions for JS Promise",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=html mocha -R spec",
-    "generate-docs": "./node_modules/.bin/jsdoc src/px.js -c conf.json -d docs/ -r README.md"
+    "linux-mocha": "./node_modules/.bin/mocha -R spec",
+    "linux-test": "./node_modules/.bin/nyc --reporter=html npm run linux-mocha",
+    "linux-docs": "./node_modules/.bin/jsdoc src/px.js -c conf.json -d docs/ -r README.md",
+
+    "win-mocha": "node node_modules/mocha/bin/mocha -R spec ",
+    "win-test": "node node_modules/nyc/bin/nyc.js --reporter=html npm run win-mocha",
+    "win-docs": "node node_modules/jsdoc/jsdoc.js src/px.js -c conf.json -d docs/ -r README.md",
+
+    "test": "npm run linux-test && npm run win-test",
+    "docs": "npm run linux-docs && npm run win-docs",
+    "generate-docs": "npm run docs"
+
   },
   "repository": {
     "type": "git",
